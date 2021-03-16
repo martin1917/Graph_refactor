@@ -142,13 +142,11 @@
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="V.h" />
-    <ClInclude Include="V_with_weight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="V.cpp" />
-    <ClCompile Include="V_with_weight.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
