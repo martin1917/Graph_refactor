@@ -1,5 +1,8 @@
 #pragma once
-
+/*
+	20ВП1 Лёвин Максим
+	Ориентированный граф
+*/
 class Graph;
 
 class V {
@@ -14,6 +17,7 @@ public:
 	V();  //constructor
 	V(string data);  //constructor with data
 	V(V*& v);  //copy constructor
+	~V();
 
 	void setNum(int num);
 	int getNum();

@@ -1,5 +1,8 @@
 #pragma once
-
+/*
+	20ВП1 Лёвин Максим
+	Ориентированный граф
+*/
 class V;
 
 class Graph{
@@ -15,6 +18,7 @@ private:
 
 public:
 	Graph();
+	~Graph();
 	vector<V*> getVertexes();
 	string** getMatrix();
 	void add_v(V* v);  //add vertex
@@ -25,5 +29,6 @@ public:
 	void create_matrix();  //create matrix
 	void setDataInVertex(V* v, string data);  //set data into graph
 
-	friend ostream& operator<<(ostream& out, Graph*& graph);  //output graph in console
+	Graph& operator =(Graph& graph);
+	friend ostream& operator<<(ostream& out, Graph& graph);  //output graph in console
 };

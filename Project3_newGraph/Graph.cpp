@@ -1,5 +1,8 @@
 #include "Classes.h"
-
+/*
+	20ВП1 Лёвин Максим
+	Ориентированный граф
+*/
 Graph::Graph() {
 	matrix_created = false;
 	lengthMatrix = 0;
@@ -44,7 +47,7 @@ void Graph::create_matrix() {
 }
 
 void Graph::add_v(V* v) {
-	v = v->getInGraph() ? new V(v) : v; //хз работает или нет
+	v = v->getInGraph() ? new V(v) : v;
 	v->setNum(lastNum++);
 	vertexes.push_back(v);
 	setDataInVertex(v, v->getData());
@@ -161,14 +164,14 @@ bool Graph::has_edge(V* v1, V* v2){
 }
 
 void Graph::refresh(V* v) {
-	int size = vertexes.size(); //текущее кол-во вершин
+	int size = vertexes.size(); 
 	int lengthMatrix_new = size + 1;
 	string** matrix_new = new string* [lengthMatrix_new];
 	for (int i = 0; i < lengthMatrix_new; i++) {
 		matrix_new[i] = new string[lengthMatrix_new];
 	}
 
-	if (lengthMatrix_new > lengthMatrix) { //добавление вершины
+	if (lengthMatrix_new > lengthMatrix) { //add vertex
 		for (int i = 0; i < lengthMatrix_new - 1; i++) {
 			for (int j = 0; j < lengthMatrix_new - 1; j++) {
 				matrix_new[i][j] = matrix[i][j];
@@ -183,7 +186,7 @@ void Graph::refresh(V* v) {
 			matrix_new[lengthMatrix_new - 1][i] = to_string(0);
 		}
 	}
-	else if (lengthMatrix_new < lengthMatrix) { //удаление вершины
+	else if (lengthMatrix_new < lengthMatrix) { //delete vertex
 		int index = get_abs_index(v->getNum());
 		int r = 0;
 		int c = 0;
@@ -231,10 +234,61 @@ void Graph::setDataInVertex(V* v, string data){
 	}
 }
 
-ostream& operator<<(ostream& out, Graph*& graph) {
-	for (int i = 0; i < graph->lengthMatrix; i++) {
-		for (int j = 0; j < graph->lengthMatrix; j++) {
-			out << graph->matrix[i][j] << "\t";
+Graph::~Graph() {
+	cout << "\nGraph is deleted\n" << endl;
+}
+
+Graph& Graph::operator=(Graph& graph) {
+	/*freeing memory */
+	if (this->matrix_created) {
+		for (int i = 0; i < this->lengthMatrix; i++){
+			delete[] this->matrix[i];
+		}
+		delete[] this->matrix;
+		this->matrix = nullptr;
+	}
+
+	/*copy matrix*/
+	string** tmp_matrix = new string* [graph.lengthMatrix];
+	for (int i = 0; i < graph.lengthMatrix; i++){
+		tmp_matrix[i] = new string[graph.lengthMatrix];
+	}
+	for (int i = 0; i < graph.lengthMatrix; i++){
+		for (int j = 0; j < graph.lengthMatrix; j++){
+			tmp_matrix[i][j] = graph.matrix[i][j];
+		}
+	}
+
+	/*copy vector of vertexes*/
+	vector<V*> tmp_vertexes;
+	for (auto v : graph.vertexes) {
+		V* now = v;//current vertex
+		V* curr = new V(v);	curr->setInGraph(true);//copy current vertex
+		tmp_vertexes.push_back(curr); 
+		while (now->getNext() != nullptr) {
+			V* t = now->getNext();
+			V* tmp = new V(t);	tmp->setInGraph(true);//copy of the next vertex after the current vertex 
+			while (curr->getNext() != nullptr){
+				curr = curr->getNext();
+			}
+			curr->setNext(tmp);  
+			now = now->getNext();  
+		}
+	}
+	
+	this->matrix = tmp_matrix;
+	this->vertexes = tmp_vertexes;
+	this->lastNum = graph.lastNum;
+	this->lengthMatrix = graph.lengthMatrix;
+	this->matrix_created = graph.matrix_created;
+
+	return *this;
+}
+
+ostream& operator<<(ostream& out, Graph& graph) {
+	for (int i = 0; i < graph.lengthMatrix; i++) {
+		for (int j = 0; j < graph.lengthMatrix; j++) {
+			out << graph.matrix[i][j] << "\t";
 		}
 		out << "\n";
 	}

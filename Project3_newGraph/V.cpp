@@ -1,5 +1,8 @@
 #include "Classes.h"
-
+/*
+	20ВП1 Лёвин Максим
+	Ориентированный граф
+*/
 V::V(){
 	init();
 }
@@ -45,6 +48,10 @@ void V::setInGraph(bool inGraph) {
 }
 bool V::getInGraph() {
 	return this->inGraph;
+}
+
+V::~V() {
+	cout << "\nVertex is deleted\n" << endl;
 }
 
 void V::writeData(){
